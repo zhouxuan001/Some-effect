@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>时钟Demo</title>
+		<style type="text/css">
+			*{margin: 0;padding: 0;}
+			html,body{width: 100%;height:100%;background: #000;color: #fff;position: relative;}
+			.now_time{line-height: 200px;text-align: center;letter-spacing: 2px;font-size: 30px;}
+			/*时钟外框和时钟中心点*/
+			.round{width: 300px;height: 300px;position: absolute;left: 50%;margin-left: -150px;top: 50%;margin-top: -150px;}
+			.round{border: 20px solid #fff;border-radius: 50%;background: #9C9999;}
+			.dot{width: 20px;height: 20px;border-radius: 50%;background: #8B4513;position: absolute;z-index: 2;left: 50%;margin-left: -10px;top: 50%;margin-top: -10px;}
+			
+			/*表针*/
+			.hour_hand{width: 8px;height: 80px;background: #8B4513;position: absolute;left: 50%;top: 50%;margin-left: -4px;margin-top: -80px;
+			transform: rotate(45deg);transform-origin: bottom;}
+			.minute_hand{width: 6px;height: 110px;background: #D2732F;position: absolute;left: 50%;top: 50%;margin-left: -3px;margin-top: -110px;
+			transform: rotate(90deg);transform-origin: bottom;}
+			.second_hand{width: 4px;height: 140px;background: #E8052F;position: absolute;left: 50%;top: 50%;margin-left: -2px;margin-top: -140px;
+			transform: rotate(0deg);transform-origin: bottom;}
+			.pointer{border-top-left-radius: 50%;border-top-right-radius: 50%;}
+			
+			.txt{display: block;position: absolute;color: #8B4513;font-size: 22px;width: 20px;height: 20px;line-height: 20px;text-align: center;}
+		</style>
+	</head>
+	<body>
+		<p class="now_time" id="now_time"></p>
+		<hr />
+		<div class="round" id="round">
+			
+			<span class="txt0 txt" style="left: 50%;margin-left: -10px;top: -20px;">12</span>
+			<span class="txt3 txt" style="top: 50%;margin-top: -10px;right: -20px;">3</span>
+			<span class="txt6 txt" style="left: 50%;margin-left: -10px;bottom: -20px;">6</span>
+			<span class="txt9 txt" style="top: 50%;margin-top: -10px;left: -20px;">9</span>
+			
+			<div class="dot"></div>
+			
+			<div class="hour_hand pointer" id="hour_hand"></div>
+			
+			<div class="minute_hand pointer" id="minute_hand"></div>
+			
+			<div class="second_hand pointer" id="second_hand"></div>
+			
+		</div>
+	</body>
+	<script type="text/javascript">
+		window.onload = function () {
+			var hour_hand = document.getElementById("hour_hand");
+			var minute_hand = document.getElementById("minute_hand");
+			var second_hand = document.getElementById("second_hand");
+			
+			var timer = setInterval(getTime,1000);
+			function getTime() {
+				var myDate = new Date() , now_time = "";
+				var year = myDate.getFullYear() , month = myDate.getMonth() + 1 , day = myDate.getDate();
+				var hour = myDate.getHours() , minute = myDate.getMinutes() , second = myDate.getSeconds();
+				now_time = "现在时间是："+year+"年"+month+"月"+day+"日"+hour+"时"+minute+"分"+second+"秒";
+				document.getElementById("now_time").innerHTML=now_time;
+				
+				hour_hand.setAttribute("style","transform:rotate("+hour*30+"deg)");
+				minute_hand.setAttribute("style","transform:rotate("+minute*6+"deg)");
+				second_hand.setAttribute("style","transform:rotate("+second*6+"deg)");
+			}
+			getTime();//先执行一遍函数，将页面里now_time元素内容先行渲染
+			
+		}
+	</script>
+	<!-- 各类时间对应的弧形角度换算 -->
+	<!-- 一圈 360deg：12小时 60分钟 60秒   -->
+	<!-- 得出 ： 1小时 = 30deg  1分钟 = 6deg  1秒 = 6deg -->
+</html>

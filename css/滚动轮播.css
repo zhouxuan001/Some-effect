@@ -1,0 +1,95 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+li{
+	list-style: none;
+}
+a{
+	text-decoration: none;
+}
+img,a,div,p,li{
+	display: block;
+}
+.box{
+	width: 952px;
+	height: 440px;
+	position: absolute;
+	padding: 10px;
+	left: 50%;
+	top: 50%;
+	margin-left: -476px;
+	margin-top: -220px;
+	background: -webkit-linear-gradient(bottom left, red , blue , purple);
+}
+.box .swipe{
+	width: 952px;
+	height: 440px;
+	position: relative;
+	overflow: hidden;
+}
+.swipe ul{
+	position: relative;
+	width: 5712px;
+	height: 440px;
+	left: 0px;
+}
+.swipe ul li{
+	/*position: relative;*/
+	float: left;
+	
+}
+.box .swipe ol{
+	position: absolute;
+	
+	bottom: 10px;
+	left: 50%;
+	margin-left: -60px;
+}
+ol li{
+	width: 20px;
+	height: 20px;
+	float: left;
+	margin-right: 5px;
+	border-radius: 50%;
+	/*border: 1px solid black;*/
+	background: white;
+}
+ol li.cur{
+	background: firebrick;
+	border: none;
+}
+ol li:hover{
+	cursor: pointer;
+}
+@font-face {
+  font-family: 'iconfont';  /* project id："161170" */
+  src: url('//at.alicdn.com/t/font_jq1esnbwtq0yhkt9.eot');
+  src: url('//at.alicdn.com/t/font_jq1esnbwtq0yhkt9.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_jq1esnbwtq0yhkt9.woff') format('woff'),
+  url('//at.alicdn.com/t/font_jq1esnbwtq0yhkt9.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_jq1esnbwtq0yhkt9.svg#iconfont') format('svg');
+}
+.swipe #leftBtn,#rightBtn{
+	width: 50px;
+	height: 50px;
+	background: rgba(255,255,255,.3);
+	text-align: center;
+	line-height: 50px;
+	color: rgba(0,0,0,.3);
+	font-size: 30px;
+	font-family: "iconfont";
+	position: absolute;
+	top: 50%;
+	margin-top: -25px;
+	display: none;
+}
+.swipe #leftBtn{
+	left: 0px;
+}
+.swipe #rightBtn{
+	right: 0px;
+}
+.swipe span:hover{
+	cursor: pointer;
+}

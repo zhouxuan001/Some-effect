@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>HTML5 Canvas 实现彩虹画笔绘画板</title>
+		<style type="text/css">
+			*{margin: 0;padding: 0;}
+			html,body{
+				width: 100%;
+				height: 100%;
+			}
+			h3{text-align: center;line-height: 50px;}
+			#canvas {
+				display: block;
+				box-shadow: 0 5px 40px black;
+				-moz-box-shadow: 0 5px 40px black;
+				-webkit-box-shadow: 0 5px 40px black;
+				margin: 0 auto;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<h3>彩虹画笔绘画版</h3>
+		
+		<canvas id="canvas" width="1200" height="650"></canvas>
+	</body>
+	<script type="text/javascript">
+		
+		//getBoundingClientRect()这个方法返回一个矩形对象，包含四个属性：left、top、right和bottom。分别表示【元素!!!】各边与页面上边和左边的距离。
+		//兼容问题：IE、Firefox3+、Opera9.5、Chrome、Safari支持
+		//bug：在IE中，默认坐标从(2,2)开始计算（其他从0,0计算），导致最终距离比其他浏览器多出两个像素，我们需要做个兼容。
+		function getRect (ele){
+			var _rect = ele.getBoundingClientRect();
+			var top = document.documentElement.clientTop;
+			var left = document.documentElement.clientLeft;
+			return {
+				top : _rect.top - top,
+				bottom : _rect.bottom - top,
+				left : _rect.left - left,
+				right : _rect.right - left
+			}
+		}
+	</script>
+	<script type="text/javascript">
+		var canvas = document.getElementById("canvas");
+		if (canvas.getContext) {
+		    //支持
+		    // drawing code here
+	    } else {
+		    //不支持
+		    // canvas-unsupported code here
+		    alert("canvas-unsupported");
+	    }
+	    var context = canvas.getContext("2d");
+		var lineW = 5;//定义初始画笔的大小
+		var isdrawing = false;
+		var mouseX,mouseY,oldX,oldY;
+		var wAdd = 1,hAdd = 1,slAdd = 1;//定义变量分别控制笔触宽度wAdd、色调hAdd以及饱和度亮度slAdd的临界值。
+		var h = 240,s = 1,l = 1;
+		canvas.addEventListener("mousedown",function(event){
+			var e = event || window.event;//offsetX获取相对于在父级元素中的位置
+			oldX = e.offsetX;
+			oldY = e.offsetY;
+			
+			context.lineJoin = "miter";
+			context.lineCap = "round";
+			isdrawing = true;
+		});
+		canvas.addEventListener("mousemove",draw);
+		function draw(event){
+			if (!isdrawing || isdrawing == "") return false;//判断当isdrawing为false时，返回false，不执行下面的代码
+			var e = event || window.event;
+			mouseX = e.offsetX;
+			mouseY = e.offsetY;
+			context.beginPath();
+			context.moveTo(oldX,oldY);
+			context.lineTo(mouseX,mouseY);
+			
+			//根据临界值改变笔触的大小
+			if (lineW >= 20) {wAdd = -1;}
+			if (lineW <= 1) {wAdd = 1;}
+			lineW += 1*wAdd;
+			context.lineWidth = lineW;
+			
+			
+			//彩虹特效：使用hsl颜色来改变笔触颜色。h s l 分别是色调，饱和度(0~100%)和亮度(0~100%)必须是百分数
+			if (h >= 360) {h = 0;}
+			h += 1*hAdd;
+			if (s >= 0.99) {slAdd = -1;}
+			if (s <= 0.01) {slAdd = 1;}
+			s += 0.01*slAdd , l += 0.01*slAdd ;
+			
+			context.strokeStyle = "hsl(" + h + "," + parseInt(s*100) + "%," + parseInt(l*100) + "%)";//h中数值去0~360。0(或360)表示红色，120表示绿色，240表示蓝色。
+			
+			context.stroke();
+			oldX = mouseX,oldY =mouseY;
+		}
+		canvas.addEventListener("mouseup",function(){isdrawing = false})
+		canvas.addEventListener("mouseout",function(){isdrawing = false})
+	</script>
+</html>

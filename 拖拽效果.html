@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				width: 100px;
+				height: 100px;
+				background: silver;
+				position: absolute;
+				left: 100px;
+				top: 100px;
+				text-align: center;
+				background: -webkit-linear-gradient(bottom left, red , blue , purple);/*C3渐变背景*/
+				color: white;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			
+		</div>
+		
+		<script src="js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function(){
+				$("#box").on("mousedown",function(e){
+					var e = e || window.event;//浏览器兼容处理
+					//获取鼠标按下时鼠标在页面中的位置: left值 和 top值
+					var firstMleft = e.pageX,firstMtop = e.pageY;
+					//获取鼠标按下时盒子在页面中的位置: left值 和 top值
+					var firstBleft = $(this).position().left , firstBtop = $(this).position().top;
+					$(document).on("mousemove",function(e){
+						var e = e || window.event;
+						//移动时获取鼠标在页面中位置
+						var newMLeft = e.pageX , newMtop = e.pageY;
+						//根据 移动前的位置 和 移动后的位置 计算出=> 总偏移值
+						var dif_x = newMLeft - firstMleft , dif_y = newMtop - firstMtop;
+						//得出盒子新的位置 => 鼠标按下时盒子位置 + 偏移值
+						var newBleft = firstBleft + dif_x, newBtop = firstBtop + dif_y;
+						//边界判断
+						if ( newBleft < 0) {
+							newBleft = 0;
+						}
+						if ( newBleft > $(document).width() - $("#box").width() ) {
+							newBleft = $(document).width() - $("#box").width();
+						}
+						if ( newBtop<0) {
+							newBtop=0;
+						}
+						if ( newBtop > $(document).height() - $("#box").height() ) {
+							newBtop = $(document).height() - $("#box").height();
+						}
+						//当鼠标在页面中移动时: 动态改变盒子的 left值 和 top值
+						$("#box").css({"left" : newBleft + "px" , "top" : newBtop + "px"});
+						$("#box").html("盒子位置" + "<br />" + "X轴 : " + newBleft + "<br />" + "Y轴 : " + newBtop);
+					})
+				})
+				.on("mouseup",function(e){//绑定鼠标松开函数
+					var e = e || window.event;
+					$(document).off("mousemove");//停掉mousemove函数
+				})
+			})
+			
+		</script>
+	</body>
+</html>

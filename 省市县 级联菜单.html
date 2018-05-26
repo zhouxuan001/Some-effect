@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!--在div:#city区域里放三个下拉select，
+			对应class为：prov、city、dist，分别表示省、市、区。
+			若只想实现省市二级联动，去掉第三个dist的select就可以了.
+			
+			所需JS文件 3个:jquery , jquery.cityselect.js , city.min.js
+		-->
+		<div id="city">
+			<select class="prov"></select>
+			<select class="city" disabled="disabled"></select>
+			<select class="dist" disabled="disabled"></select>
+		</div>
+		
+		<script src="js/jquery-1.8.3.min.js"></script>
+		<script src="js/jquery.cityselect.js"></script>
+		<script type="text/javascript">
+		/*
+		 * 单独调用不设置参数: $("#city").citySelect()  即可
+		设置 参数说明
+		-----
+		url:省市数据josn文件路径
+		prov:默认省份
+		city:默认城市
+		dist:默认地区（县）
+		nodata:无数据状态
+		required:必选项*/
+			$(function(){
+				$("#city").citySelect({
+					url:"js/city.min.js",
+					prov:"湖南", //省份  
+				    city:"长沙", //城市  
+				    dist:"岳麓区", //区县
+					nodata:"none" //当子集无数据时，隐藏select
+				})
+			})
+		</script>
+	</body>
+</html>

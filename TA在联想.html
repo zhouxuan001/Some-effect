@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body,html{
+				width: 100%;
+				height: 100%;
+				background: #282828;
+				font-family: Arial,Helvetica,sans-serif;
+			}
+			i{
+				font-style: normal;
+			}
+			img{
+				display: block;
+			}
+			#mainbox{
+				width: 100%;
+				height: 100%;
+				margin-top: 100px;
+			}
+			#mainbox #title{
+				display: block;
+				margin: 0 auto;
+				width: 184px;
+				border-bottom: 4px solid #383838;
+				margin-bottom: 20px;
+			}
+			#mainbox #title img{
+				width: 100%;
+				margin: 10px auto 10px;
+			}
+			#mainbox #personBox{
+				width: 1200px;
+				margin: 0 auto;
+			}
+			#personBox li{
+				width: 210px;
+				height: 210px;
+				display: block;
+				float: left;
+				margin: 0 0 20px 20px;
+				background: #383838;
+				position: relative;
+				overflow: hidden;
+				cursor: pointer;
+				transition: all 0.5s linear;
+			}
+			#personBox li img{
+				height: 190px;
+				margin: 0 auto;
+				margin-top: 10px;
+			}
+			@font-face {
+			  font-family: 'iconfont';  /* project id："161170" */
+			  src: url('//at.alicdn.com/t/font_bplca3uc8m5nrk9.eot');
+			  src: url('//at.alicdn.com/t/font_bplca3uc8m5nrk9.eot?#iefix') format('embedded-opentype'),
+			  url('//at.alicdn.com/t/font_bplca3uc8m5nrk9.woff') format('woff'),
+			  url('//at.alicdn.com/t/font_bplca3uc8m5nrk9.ttf') format('truetype'),
+			  url('//at.alicdn.com/t/font_bplca3uc8m5nrk9.svg#iconfont') format('svg');
+			}
+			#personBox li div.aniBox{
+				width: 190px;
+				height: 190px;
+				margin: 10px 0 0 10px;
+				position: absolute;
+				background: rgba(209,51,49,0.7);
+				opacity: 0;
+				transition: all 0.3s linear;
+				transform-origin: bottom right;
+				transform: rotate(90deg);
+			}
+			#personBox li:hover{
+				background: #505050;
+			}
+			#personBox li:hover div.aniBox{
+				opacity: 1;
+				transform: rotate(0deg);
+			}
+			.aniBox i{
+				width: 45px;
+				height: 45px;
+				display: block;
+				font-style: normal;
+				text-align: center;
+				line-height: 45px;
+				font-family: 'iconfont';
+				font-size: 30px;
+				background: white;
+				border-radius: 50%;
+				color: rgba(209,51,49,0.8);
+				margin: 0 auto;
+				margin-top: 50px;
+			}
+			.aniBox span{
+				display: block;
+				margin: 0 auto;
+				text-align: center;
+				font-size: 20px;
+				color: white;
+				line-height: 50px;
+			}
+			.aniBox p{
+				text-align: center;
+				color: white;
+				font-size: 12px;
+			}
+			
+			#bg_box{
+				width: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="mainbox">
+			<h2 id="title">
+				<img src="image/title.png"/>
+			</h2>
+			<ul id="personBox">
+				<li>
+					<div class="aniBox">
+						<i>&#xe660;</i>
+						<span>孙玉莎</span>
+						<p>联想给了我更大的舞台</p>
+					</div>
+					<img src="image/1.png"/>
+				</li>
+				<li>
+					<div class="aniBox">
+						<i>&#xe660;</i>
+						<span>宋琦</span>
+						<p>小清新专利保护女超人</p>
+					</div>
+					<img src="image/2.png"/>
+				</li>
+				<li>
+					<div class="aniBox">
+						<i>&#xe660;</i>
+						<span>段路路</span>
+						<p>爱生活的百变游戏MM</p>
+					</div>
+					<img src="image/3.png"/>
+				</li>
+				<li>
+					<div class="aniBox">
+						<i>&#xe660;</i>
+						<span>孙小清</span>
+						<p>懂管理的大客户销售 </p>
+					</div>
+					<img src="image/4.png"/>
+				</li>
+				<li>
+					<div class="aniBox">
+						<i>&#xe660;</i>
+						<span>许力诺</span>
+						<p>不安于现状 <br/>但乐于知足的人力妹纸</p>
+					</div>
+					<img src="image/5.png"/>
+				</li>
+				<li>
+					<div class="aniBox">
+						<i>&#xe660;</i>
+						<span>成俞晟</span>
+						<p>技术宅服务器工程师</p>
+					</div>
+					<img src="image/6.png"/>
+				</li>
+				<li>
+					<div class="aniBox">
+						<i>&#xe660;</i>
+						<span>Dillon</span>
+						<p>来自哈佛的战略伙伴经理</p>
+					</div>
+					<img src="image/7.png"/>
+				</li>
+				<li>
+					<div class="aniBox">
+						<i>&#xe660;</i>
+						<span>Said </span>
+						<p>开朗健谈的中国通</p>
+					</div>
+					<img src="image/8.png"/>
+				</li>
+				<li>
+					<div class="aniBox">
+						<i>&#xe660;</i>
+						<span>田雨丰</span>
+						<p>开朗又细心的会计暖男 </p>
+					</div>
+					<img src="image/9.png"/>
+				</li>
+				<li>
+					<div class="aniBox">
+						<i>&#xe660;</i>
+						<span>于乐</span>
+						<p>与联想同龄的研发工程师 </p>
+					</div>
+					<img src="image/10.png"/>
+				</li>
+			</ul>
+		</div>
+		
+		<div id="bg_box"></div>
+		<div id="details_box">
+			<span id="close">
+				<i></i>
+			</span>
+			<span id="prev">
+				<i></i>
+			</span>
+			<span id="next">
+				<i></i>
+			</span>
+		</div>
+	</body>
+</html>
