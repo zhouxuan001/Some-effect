@@ -18,11 +18,3 @@
 [省市县 级联菜单](https://zhouxuan001.github.io/Some-effect/省市县%20级联菜单.html?_blank)
 
 [轮换板轮播图效果](https://zhouxuan001.github.io/Some-effect/轮换板轮播图效果.html?_blank)
-
-
-<script type="text/javascript">
-	var aTagArr = [].slice.apply(document.getElementsByTagName("a"));
-	aTagArr.forEach(function (e, i) {
-	  e.href.indexOf("_blank") > -1 ? e.target = "_blank" : null;
-	});
-</script>
