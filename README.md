@@ -3,9 +3,9 @@
 
 [HTML5 Canvas 实现彩虹画笔绘画板](https://zhouxuan001.github.io/Some-effect/HTML5%20Canvas%20实现彩虹画笔绘画板.html)
 
-[TA在联想](https://zhouxuan001.github.io/Some-effect/TA在联想.html "显示")
+[TA在联想](https://zhouxuan001.github.io/Some-effect/TA在联想.html)
 
-[拖拽效果](https://zhouxuan001.github.io/Some-effect/拖拽效果.html "_blank")
+[拖拽效果](https://zhouxuan001.github.io/Some-effect/拖拽效果.html)
 
 [放大镜效果](https://zhouxuan001.github.io/Some-effect/放大镜效果.html)
 
