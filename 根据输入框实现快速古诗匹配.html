@@ -63,7 +63,8 @@
 			}
 			.tankuang .tk_inner{
 				width: 500px;
-				padding: 0 50px 40px;
+				padding: 0 50px;
+				margin: 40px 0;
 				overflow-y: auto;
 			}
 			.tankuang p{
@@ -150,6 +151,32 @@
 				bottom: 0;
 				left: 0;
 			}
+			
+			
+			
+			/*滚动条样式*/
+	        body::-webkit-scrollbar,.tk_inner::-webkit-scrollbar {/*滚动条整体样式*/
+	            width: 8px;     /*高宽分别对应横竖滚动条的尺寸*/
+	            height: 10px;
+	        }
+	        body::-webkit-scrollbar-thumb,.tk_inner::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+	            border-radius: 5px;
+	            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+	            background: rgba(0,0,0,0.2);
+	        }
+	        body::-webkit-scrollbar-track,.tk_inner::-webkit-scrollbar-track {/*滚动条里面轨道*/
+	            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+	            border-radius: 5px;
+	            background: #C4C4C4;
+	        }
+	        body::-webkit-scrollbar {
+	        	width: 10px;
+	        	height: 10px;
+	        }
+			body::-webkit-scrollbar-track {
+				background: #6291a4;
+			}
+			
 		</style>
 	</head>
 	<body>
@@ -307,9 +334,9 @@
 					var tk_h = $("#tankuang").height()+80;//获取插入了内容的弹框高度
 					console.log(tk_h +","+window_h);
 					if ( tk_h > window_h ) {//如果超出了当前窗口高度则将body页面滚动条禁用。
-						$(document.body).css({"overflow-y": "hidden"});
 					}
-					$("#tankuang .tk_inner").css({"max-height":window_h-80});//再为弹框设置最大高度，使弹框里内容可以上下滚动浏览
+					$(document.body).css({"overflow-y": "hidden"});
+					$("#tankuang .tk_inner").css({"max-height":window_h-80-40});//再为弹框设置最大高度，使弹框里内容可以上下滚动浏览
 					
 					
 				})
