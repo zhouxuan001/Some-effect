@@ -1,0 +1,24 @@
+{
+  "name": "some-effect",
+  "version": "1.0.0",
+  "description": "自己平时做的一些小东西：",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhouxuan001/Some-effect.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhouxuan001/Some-effect/issues"
+  },
+  "homepage": "https://github.com/zhouxuan001/Some-effect#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-sass": "^4.0.2"
+  }
+}

@@ -3,353 +3,53 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>根据输入框实现快速古诗匹配</title>
-		<script src="js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
-		<style type="text/css">
-			*{padding: 0;margin: 0;}
-			body,html{width: 100%;height: 100%;height: auto;background: #6291a4;position: relative;font-family: "微软雅黑";box-sizing: border-box;}
-			body {display: flex;justify-content: center;padding-bottom: 50px;position: absolute;}
-			.main{margin: 20px auto 0;}
-			.box{margin: 0 auto;width: 800px;height: 80px;background: #f3f3f3;overflow: hidden;border-radius: 5px;}
-			.box #input{display: inline-block;width: 780px;height: 60px;line-height: 60px;margin: 10px;text-align: center;vertical-align: middle;color: #000;outline: none;border: 0;border-radius: 5px;font-size: 26px;}
-			.txt_wrap{width: 740px;margin: -2px auto 0;color: #fff;text-align: center;}
-			.txt_wrap li{width: 720px;margin: 0 auto;padding: 10px 10px;border: 1px solid #e3e3e3;
-				background: #f3f3f3;display: flex;flex-direction: column;box-shadow: 0 0 10px rgba(0, 0, 0, 0.14);
-				cursor: pointer;
-			}
-			.txt_wrap li .verse{line-height: 40px;font-size: 16px;color: #000;}
-			.txt_wrap li .verse span{display: inline-block;color: #04a81b;}
-			.txt_wrap li .source{line-height: 18px;font-size: 14px;color: #9c9a9a;text-align: right;}
-			.txt_wrap li .source span{display: inline-block;color: #04a81b;}
-			
-			.txt_wrap li .hinit,.txt_wrap li .d_bg{display: none;}
-			
-			/*偶数匹配*/
-			.txt_wrap li:nth-child(even) {  
-			    transform: perspective(100px) rotateX(3deg) translateY(2px) scale(1.001);
-			}
-			/*奇数匹配*/
-			.txt_wrap li:nth-child(odd) {  
-			    transform: perspective(100px) rotateX(-3deg) translateY(3px);
-			}
-			
-			
-			
-			/*弹出诗词层*/
-			.zhezhao{
-				display: none;
-				position: fixed;
-				width: 100%;
-				height: 100%;
-				background: #000;
-				opacity:0.5;
-				filter:alpha(opacity=50);
-				left: 0;
-				top: 0;
-				z-index: 1;
-			}
-			.tankuang{
-				display: none;
-				background: #c4c4c4;
-				box-shadow: 0 5px 40px black;
-				-moz-box-shadow: 0 5px 40px black;
-				-webkit-box-shadow: 0 5px 40px black;
-				position: fixed;
-				top: 50%;left: 50%;
-				transform: translateX(-50%) translateY(-50%);
-				/*margin: 0 auto;
-				display: inline-block;
-				vertical-align: middle;*/
-				z-index: 2;
-			}
-			.tankuang .tk_inner{
-				width: 500px;
-				padding: 0 50px;
-				margin: 40px 0;
-				overflow-y: auto;
-			}
-			.tankuang p{
-				font-size: 18px;
-				line-height: 30px;
-				font-family: arial;
-			}
-			.tankuang .t_tit{
-				font-size: 22px;
-				font-weight: 600;
-				line-height: 30px;
-				padding-top: 40px;
-				color: #3F3232;
-				text-align: center;
-			}
-			.tankuang .t_author{
-				font-size: 16px;
-				line-height: 40px;
-				color: #60290E;
-				text-align: center;
-			}
-			.tankuang .t_author .t_dynasty{
-				font-size: 14px;
-				line-height: 40px;
-				color: #27115C;
-				display: inline;
-			}
-			.tankuang .t_detail{
-				font-size: 18px;
-				line-height: 30px;
-				color: #3F3232;
-				text-align: center;
-			}
-			.tankuang .t_hint{
-				font-size: 16px;
-				line-height: 30px;
-				color: #1B4E5B;
-				padding-top: 20px;
-				font-weight: 600;
-			}
-			.tankuang .t_fy{
-				font-size: 14px;
-				line-height: 20px;
-				color: #505050;
-			}
-			.tankuang .t_bg{
-				font-size: 14px;
-				line-height: 20px;
-				color: #505050;
-				margin-top: 10px;
-			}
-			.tankuang .t_bg b{
-				font-size: 16px;
-				color: #1B4E5B;
-			}
-			.t_close{
-				position: fixed;
-				display: block;
-				width: 40px;
-				height: 40px;
-				line-height: 40px;
-				top: 10px;
-				right: 20px;
-				font-size: 28px;
-				font-weight: 600;
-				text-align: center;
-				color: #342D2D;
-				cursor: pointer;
-				z-index: 3;
-			}
-			.top_wrap{
-				width: 100%;
-				height: 40px;
-				background: #C4C4C4;
-				position: fixed;
-				top: 0;
-				left: 0;
-			}
-			.bottom_wrap{
-				width: 100%;
-				height: 40px;
-				background: #C4C4C4;
-				position: fixed;
-				bottom: 0;
-				left: 0;
-			}
-			
-			
-			
-			/*滚动条样式*/
-	        body::-webkit-scrollbar,.tk_inner::-webkit-scrollbar {/*滚动条整体样式*/
-	            width: 8px;     /*高宽分别对应横竖滚动条的尺寸*/
-	            height: 10px;
-	        }
-	        body::-webkit-scrollbar-thumb,.tk_inner::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
-	            border-radius: 5px;
-	            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-	            background: rgba(0,0,0,0.2);
-	        }
-	        body::-webkit-scrollbar-track,.tk_inner::-webkit-scrollbar-track {/*滚动条里面轨道*/
-	            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-	            border-radius: 5px;
-	            background: #C4C4C4;
-	        }
-	        body::-webkit-scrollbar {
-	        	width: 10px;
-	        	height: 10px;
-	        }
-			body::-webkit-scrollbar-track {
-				background: #6291a4;
-			}
-			
-		</style>
+        <link rel="stylesheet" href="css/poetry.css">
 	</head>
 	<body>
-		<div class="main" id="main">
-			<h3 style="text-align: center;color: #fff;line-height: 60px;">根据你输入的中文来搜索诗词数据中对应的(诗词名、诗词内容、诗词作者、朝代)</h1>
-			<div class="box"><input type="text" id="input" value="" /></div>
-			<ul class="txt_wrap">
-				<!--<li class="txt">
-					<p class="verse"></p>
-					<p class="source"></p>
-				</li>-->
-			</ul>
-			
-			
-			<div class="zhezhao" id="zhezhao"></div>
-			<div class="tankuang" id="tankuang">
-				<span class="t_close">X</span>
-				<div class="top_wrap"></div>
-				<div class="bottom_wrap"></div>
-				<div class="tk_inner">
-				<!--<p class="t_tit">离思五首·其四</p>
-				<p class="t_author">元稹<span class="t_dynasty">(唐代)</span></p>
-				<p class="t_detail">寥落古行宫，宫花寂寞红。</p>
-				<p class="t_detail">白头宫女在，闲坐说玄宗。</p>
-				<p class="t_hint">译文及注释:</p>
-				<p class="t_fy">译文</p>
-				<p class="t_fy">空旷冷落的古旧行宫，只有宫花寂寞地艳红。</p>
-				<p class="t_fy">几个满头白发的宫女，闲坐无事谈论唐玄宗。</p>
-				<p class="t_fy">注释</p>
-				<p class="t_fy">（1）寥（liáo）落：寂寞冷落。</p>
-				<p class="t_fy">（2）行宫：皇帝在京城之外的宫殿。这里指当时东都洛阳的皇帝行宫上阳宫。</p>
-				<p class="t_bg"><b>时代背景：</b>元稹生活在中唐年代，正值唐朝经历过安史之乱不久，国力的各个方面都在走下坡路之时。该诗就是以小见大地点明了唐朝衰败的重要原因。</p>-->
-				</div>
+		<div class="wrap">
+			<div class="main" id="main">
+				<h3 class="title">根据你输入的中文来搜索诗词数据中对应的诗词(匹配诗词名、诗词内容、诗词作者、朝代)</h1>
+				<div class="box"><input type="text" id="input" value="" placeholder="请输入想要搜索的文字" /></div>
+				<ul class="txt_wrap">
+					<!-- <li class="txt">
+						<div class="verse">2222</div>
+						<div class="source">222222</div>
+					</li> -->
+				</ul>
+				<div class="empty">未搜索到对应结果，请尝试搜索其它文字！</div>
 			</div>
-			
-			
 		</div>
-		
-		
-		
-		<script type="text/javascript">
-			$(function(){
-				/*$.getJSON("data/poetry.json",function(json){
-					console.log(json);
-				})*/
-				
-				/* start:监听键盘匹配诗词*/
-				var outTimer;
-				$("#input").prop('comStart', false);
-				$("#input").bind({
-					keyup:function(){//input propertychange 当输入框里的值有变化时执行此函数
-						if ( !$("#input").prop("comStart") ){//判断状态，如果正在执行中文输入时，comStart此值为true=>下面代码不执行
-							console.log("此时不是中文输入");
-							show_poetry();
-						}
-					},
-					compositionstart:function () {//在中文未输入完成时跳入此处,先不执行上面的事件处理
-		                $("#input").prop("comStart", true);
-		                console.log('中文输入：开始');
-		            },
-		            compositionend:function () {
-		                $("#input").prop("comStart", false);
-		                console.log('中文输入：结束');
-		                //show_poetry();
-		            }
-				})
-				
-				function show_poetry(){//显示匹配的诗词
-					var now_text = $("#input").val();
-					var isbeing = false;//判断是否查询到
-					$(".txt_wrap").html("");
-					clearTimeout(outTimer);//清除之前的
-					outTimer = setTimeout(function(){//0.8秒内未输入时，执行查找方法
-						$.ajax({
-							type:"get",
-							url:"data/poetry.json",
-							dataType:"json",
-							success:function(data){
-								if (now_text == "") return false;
-								for (var i = 0; i < data.length; i++) {
-									//循环查找输入的字符在诗词、标题以及作者姓名中是否存在
-									if ( data[i].detail_text.indexOf(now_text)>-1 || data[i].title.indexOf(now_text)>-1 || data[i].detail_author.indexOf(now_text)>-1 || data[i].detail_dynasty.indexOf(now_text)>-1) {
-										isbeing = true;//查询到输入的字符时将isbeng变为true
-										var search = new RegExp(now_text,'g');//使用RegExp查找指定字符
-										var detail_text = data[i].detail_text.replace(search,'<span>'+ now_text +'</span>');//替换诗词里查找的字符
-										var title = data[i].title.replace(search,'<span>'+ now_text +'</span>');//替换诗词标题里查找的字符
-										var detail_author = data[i].detail_author[0].replace(search,'<span>'+ now_text +'</span>');//替换作者名字中查找的字符
-										var dynasty = data[i].detail_dynasty.replace(search,'<span>'+ now_text +'</span>');//替换朝代中查找的字符
-										
-										var verse = '<p class="verse">'+ detail_text +'</p>';//创建诗词主体标签
-										var source = '<p class="source">《'+ title + '》' + detail_author + "(" + dynasty + ")" +'</p>';//标题·作者（朝代）
-										var hinit = '<p class="hinit">'+ data[i].detail_translate_text +'</p>';//创一个隐藏的标签存储该诗词的译文和注释(为一个数组)
-										var d_bg = '<p class="d_bg">'+ data[i].detail_background_text +'</p>';//创一个隐藏的标签存储该诗词的时代背景
-										//console.log(data[i].detail_translate_text[0]);
-										
-										
-										var txt = '<li class="txt">'+ verse + source + hinit + d_bg +'</li>';
-										$(".txt_wrap").append(txt);//将匹配的这一首诗词添加到页面结构里
-									}
-								}
-								if (!isbeing) {//没有查询到对应数据时
-									$(".txt_wrap").html("未搜索到相应结果，请重试！");
-									return false;
-								}
-								
-								
-							}
-						});
-					},800)
-				}
-				
-				/* end:监听键盘匹配诗词*/
-				
-				
-				
-				/* start:点击诗词弹出此首诗词详细信息*/
-				//直接调用click()方法 绑定不到事件。需要在.on里面添加我们需要绑定点击事件的选择器，不然绑定不了。也可以用.delegate（）方法。
-				$(".txt_wrap").off("click").on("click","li",function(){
-					
-					var source = $(this).find(".source").text();//文本(例)：《行宫》元稹(唐代)  添加标题和作者朝代
-					var tit = source.split("《")[1].split("》");//切割成数组：  ["行宫"，"元稹(唐代)"]
-					var t_tit = '<p class="t_tit">'+ tit[0] +'</p>';//获取标题数据，创建标题标签
-					
-					tit = tit[1].split("(");//将字符串"元稹(唐代)"切割成：["元稹","唐代)"]
-					var author = tit[0];
-					var t_dynasty = tit[1].split(")")[0];//"唐代)" => ["唐代",""]
-					var t_author = '<p class="t_author">'+ author +'<span class="t_dynasty">('+ t_dynasty +')</span></p>';//创建作者朝代标签
-					
-					$("#tankuang .tk_inner").append(t_tit + t_author);//添加标题和作者朝代文本
-					
-					var verse_data = $(this).find(".verse").text().split("。");//文本："寥落古行宫，宫花寂寞红。白头宫女在，闲坐说玄宗。" 根据句号切割，每一句创建一个p.t_detail标签
-					for (var i=0;i<verse_data.length-1;i++) {//已转数组["寥落古行宫，宫花寂寞红","白头宫女在，闲坐说玄宗",""]
-						var t_detail = '<p class="t_detail">'+ verse_data[i] +'。</p>';
-						$("#tankuang .tk_inner").append(t_detail);
-					}//添加诗词主题文本
-					
-					var hinit_title = '<p class="t_hint">译文及注释:</p>';
-					$("#tankuang .tk_inner").append(hinit_title);
-					var hinit_data = $(this).find(".hinit").text().split(",");//将诗词的译文和注释(此时为字符串)转换成数组
-					$.each(hinit_data, function(item,value) {//item为数组的index值(0~length),value为遍历的值
-						//console.log(item+"+"+value);
-						var t_fy = '<p class="t_fy">'+ value +'</p>';
-						$("#tankuang .tk_inner").append(t_fy);
-					});//添加注释和译文内容文本
-					
-					var d_bg = $(this).find(".d_bg").text();
-					var t_bg = '<p class="t_bg"><b>时代背景：</b>'+ d_bg +'</p>';
-					$("#tankuang .tk_inner").append(t_bg);//添加时代背景文本
-					
-					$("#zhezhao").show();
-					$("#tankuang").show();
-					
-					
-					var window_h = $(window).height();
-					var tk_h = $("#tankuang").height()+80;//获取插入了内容的弹框高度
-					console.log(tk_h +","+window_h);
-					if ( tk_h > window_h ) {//如果超出了当前窗口高度则将body页面滚动条禁用。
-					}
-					$(document.body).css({"overflow-y": "hidden"});
-					$("#tankuang .tk_inner").css({"max-height":window_h-80-40});//再为弹框设置最大高度，使弹框里内容可以上下滚动浏览
-					
-					
-				})
-				
-				
-				$(".t_close").off("click").on("click",function(){//关闭弹框按钮
-					$("#tankuang .tk_inner p").remove();//清除弹框内诗词内容
-					$("#zhezhao").hide();
-					$("#tankuang").hide();
-					$(document.body).css({"overflow-y": "auto"});
-				})
-				/* end:点击诗词弹出此首诗词详细信息*/
-			})
-		</script>
+		<div class="tankuang" id="tankuang">
+			<div class="zhezhao" id="zhezhao"></div>
+			<div class="tk">
+				<div class="tk_close"><i class="icon-close">x</i></div>
+				<div class="tk_inner"></div>
+				<!-- <div class="tk_inner">
+					<div class="tk_tit">行宫</div>
+					<div class="tk_author">元稹</div>
+					<div class="tk_detail">寥落古行宫，宫花寂寞红。<br><span>白</span>头宫女在，闲坐说玄宗。</div>
+					<p class="tk_hint">译文及注释:</p>
+					<p class="tk_tip">译文</p>
+					<div class="tk_fy">
+						<p>曾经富丽堂皇的古行宫已是一片荒凉冷落，宫中艳丽的花儿在寂寞寥落中开放。</p>
+						<p>幸存的几个满头白发的宫女，闲坐无事只能谈论着玄宗轶事。</p>
+					</div>
+					<p class="tk_tip">注释</p>
+					<div class="tk_zs">
+						<p>１、寥落：寂寞冷落。</p>
+						<p>２、行宫：皇帝在京城之外的宫殿。</p>
+					</div>
+					<p class="tk_hint">诗词赏析：</p>
+					<div class="tk_bg">
+						<p>元稹的这首《行宫》是一首抒发盛衰之感的诗，可与白居易《上阳白发人》参互并观。这里的古行宫即洛阳行宫上阳宫，白头宫女即“上阳白发人”。据白居易《上阳白发人》，这些宫女天宝（742-756）末年被“潜配”到上阳宫，在这冷宫里一闭四十多年，成了白发宫人。这首短小精悍的五绝具有深邃的意境，富有隽永的诗味，倾诉了宫女无穷的哀怨之情，寄托了诗人深沉的盛衰之感。</p>
+						<p>此诗首句点明地点：古行宫；二句暗示时间：红花盛开之季；三句介绍人物；白头宫女；四句描绘动作：闲坐说玄宗。构筑了一幅完整动人的图画。当年花容月貌，娇姿艳质，辗转落入宫中，寂寞幽怨；此时青春消逝，红颜憔悴；闲坐无聊，只有谈论已往。此情此景，十分凄绝。这首诗平实，但很有概括力，也很含蓄，并给人以想象的天地，历史沧桑之感尽在不言之中。</p>
+						<p>诗人塑造意境，艺术上主要运用了两种表现手法。一是以少总多。我国古典诗歌讲究精炼，写景、言情、叙事都要以少总多。这首诗正具有举一而反三，字少而意多的特点。四句诗，首句指明地点，是一座空虚冷落的古行宫；次句暗示环境和时间，宫中红花盛开，正当春天季节；三句交代人物，几个白头宫女，与末句联系起来推想，可知是玄宗天宝末年进宫而幸存下来的老宫人；末句描写动作，宫女们正闲坐回忆、谈论天宝遗事。二十个字，地点、时间、人物、动作，全都表现出来了，构成了一幅非常生动的画面。这个画面触发读者联翩的浮想：宫女们年轻时都是月貌花容，娇姿艳质，这些美丽的宫女被禁闭在这冷落的古行宫之中，成日价寂寞无聊，看着宫花，花开花落，年复一年，青春消逝，红颜憔悴，白发频添，如此被摧残，往事不堪重省。然而，她们被禁闭冷宫，与世隔绝，别无话题，却只能回顾天宝时代玄宗遗事，此景此情，令人凄绝。“寥落”、“寂寞”、“闲坐”，既描绘当时的情景，也反映诗人的倾向。凄凉的身世，哀怨的情怀，盛衰的感慨，二十个字描绘出那样生动的画面，表现出那样深刻的意思，所以宋洪迈《容斋随笔》卷二说这首诗“语少意足，有无穷之味”；明胡应麟《诗薮·内编》卷六以为这首诗是王建所作，并说“语意绝妙，合（王）建七言《宫词》百首，不易此二十字也”。</p>
+						<p>另一个表现手法是以乐景写哀。我国古典诗歌，其所写景物，有时从对立面的角度反衬心理，利用忧思愁苦的心情同良辰美景气氛之间的矛盾，以乐景写哀情，却能收到很好的艺术效果。这首诗也运用了这一手法。诗所要表现的是凄凉哀怨的心境，但却着意描绘红艳的宫花。红花一般是表现热闹场面，烘托欢乐情绪的，但在这里却起了很重要的反衬作用：盛开的红花和寥落的行宫相映衬，加强了时移世迁的盛衰之感；春天的红花和宫女的白发相映衬，表现了红颜易老的人生感慨；红花美景与凄寂心境相映衬，突出了宫女被禁闭的哀怨情绪。红花，在这里起了很大的作用。这都是利用好景致与恶心情的矛盾，来突出中心思想，即王夫之《姜斋诗话》所谓“以乐景写哀”，一倍增其哀。白居易《上阳白发人》“宫莺百啭愁厌闻，梁燕双栖老休妒”，也可以说是以乐写哀。不过白居易的写法直接揭示了乐景写哀情的矛盾，而元稹《行宫》则是以乐景作比较含蓄的反衬，显得更有余味。 </p>
+					</div>
+				</div> -->
+			</div>
+		</div>
+		<script src="js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/poetry02.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>

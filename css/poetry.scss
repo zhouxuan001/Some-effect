@@ -1,0 +1,375 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+body,
+html {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    font-family: '微软雅黑';
+    box-sizing: border-box;
+}
+body {
+	background-color: #6291a4;
+	background: -webkit-linear-gradient(-45deg, #6291a4 0%, #7f6792 76%);
+	background: -webkit-linear-gradient(315deg, #6291a4 0%, #7f6792 76%);
+	background: linear-gradient(135deg, #6291a4 0%, #7f6792 76%);
+}
+// body {
+//     display: flex;
+//     justify-content: center;
+//     padding-bottom: 50px;
+//     position: absolute;
+// }
+.wrap {
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	padding-bottom: 40px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	overflow-y: overlay;
+}
+.main {
+	width: 60%;
+	margin: 0 auto;
+	padding-top: 40px;
+	.title {
+		text-align: center;
+		color: #fff;
+		line-height: 30px;
+		margin-bottom: 20px;
+		background-image: linear-gradient(92deg, #ff7793 0,#64ff80 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		animation: hue 30s infinite linear;
+		background-color: white;
+		position: relative;
+		transition: 0.3s all ease;
+		&:hover {
+			transform: scale(1.05);
+		}
+	}
+}
+// 未搜索到结果的空白提示
+.empty {
+	display: none;
+	font-size: 20px;
+	color: #fff;
+	line-height: 60px;
+	text-align:center;
+}
+.box {
+    margin: 0 auto;
+    width: 100%;
+    height: 80px;
+	box-sizing: border-box;
+	padding: 10px;
+    background: #f3f3f3;
+    overflow: hidden;
+    border-radius: 5px;
+	#input {
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+		height: 60px;
+		line-height: 60px;
+		text-align: center;
+		vertical-align: middle;
+		color: #d27f15;
+		outline: none;
+		border: 0;
+		border-radius: 5px;
+		font-size: 26px;
+		transition: 0.3s all ease;
+	}
+	&:hover {
+		box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.5);
+	}
+}
+.txt_wrap {
+	display: block;
+    width: 100%;
+	height: 0;
+	overflow: hidden;
+    margin: -2px auto 0;
+    color: #fff;
+    text-align: center;
+	transition: all 0.4s cubic-bezier(0.32, 1.01, 0.78, -0.22);
+	li {
+		position: relative;
+	    width: 95%;
+		height: 72px;
+		box-sizing: border-box;
+	    margin: 0 auto;
+	    padding: 18px 10px 10px;
+	    border: 1px solid #e3e3e3;
+	    background: #f3f3f3;
+	    display: flex;
+	    flex-direction: column;
+	    box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+	    cursor: pointer;
+		transition: all 0.4s cubic-bezier(0.43, 2.56, 0.35, -0.43);
+		.content {
+			display: block;
+		    line-height: 1.5;
+		    font-size: 16px;
+		    color: #333;
+			padding: 0px 20px;
+			span {
+			    display: inline-block;
+			    color: #04a81b;
+			}
+			br {
+				display: none;
+			}
+			p {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		}
+		
+		.source {
+			display: block;
+		    line-height: 18px;
+		    font-size: 14px;
+		    color: #666;
+		    text-align: right;
+			span {
+			    display: inline-block;
+			    color: #04a81b;
+			}
+		}
+		
+		.trans,.hinit,.bg {
+			display: none;
+		}
+		
+		/*偶数匹配*/
+		&:nth-child(even) {
+			transform: perspective(100px) rotateX(3deg) translateY(0px) scale(1);
+		}
+		/*奇数匹配*/
+		&:nth-child(odd) {
+		    transform: perspective(100px) rotateX(-3deg) translateY(1px);
+		}
+		&:hover {
+			z-index: 1;
+			height: 80px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+			transform: perspective(100px) rotateX(0deg) translateY(2px) scale(1.05);
+		}
+	}
+}
+
+/*弹出诗词层*/
+.tankuang {
+    display: none;
+	
+	.zhezhao {
+		opacity: 0;
+	    position: fixed;
+	    width: 100%;
+	    height: 100%;
+		top: 0;
+		left: 0;
+		background-color: rgba(55, 55, 55, 0.6);
+	    z-index: 999;
+		transition: all 0.3s ease;
+	}
+	.tk {
+		opacity: 0;
+		width: 600px;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translateX(-50%) translateY(-50%);
+		background: #d8d8d8;
+		box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.5);
+		z-index: 1000;
+		transition: all 0.3s ease;
+		overflow: hidden;
+		.tk_close { // 关闭按钮
+		    display: block;
+		    width: 100%;
+		    text-align: right;
+		    z-index: 3;
+			.icon-close {
+				display: inline-block;
+				width: 40px;
+				height: 40px;
+				line-height: 40px;
+				font-style: normal;
+				font-size: 36px;
+				color: #342d2d;
+				text-align: center;
+				margin: 10px 10px 10px auto;
+				cursor: pointer;
+				transition: all 0.3s cubic-bezier(0.43, 2.56, 0.7, -1.4);
+				&:hover {
+					transform: scale(1.35);
+				}
+			}
+		}
+		.tk_inner {
+			font-family: arial;
+		    width: 600px;
+			box-sizing: border-box;
+		    padding: 0 50px;
+			max-height: calc(100vh - 60px - 40px - 40px);
+			overflow-x: hidden;
+			overflow-y: auto;
+		    overflow-y: overlay;
+			.tk_tit { // 标题
+			    font-size: 22px;
+			    font-weight: 600;
+			    line-height: 50px;
+			    color: #bf9340;
+			    text-align: center;
+			}
+			.tk_author { // 作者
+			    font-size: 16px;
+			    line-height: 40px;
+			    color: #c15b1e;
+			    text-align: center;
+				
+				.tk_dynasty { // 朝代
+				    font-size: 14px;
+				    line-height: 40px;
+				    display: inline;
+				}
+			}
+			
+			.tk_detail { // 诗词内容
+			    font-size: 16px;
+			    line-height: 30px;
+			    color: #333;
+			    text-align: center;
+				letter-spacing: 2px;
+			}
+			
+			.tk_hint { // 提示文字(译文及注释：)
+			    font-size: 16px;
+			    line-height: 30px;
+			    color: #1b4e5b;
+			    padding-top: 20px;
+			    font-weight: 600;
+			}
+			
+			.tk_tip { // 提示文字
+				font-size: 14px;
+				line-height: 24px;
+				color: #9a7c26;
+			}
+			
+			.tk_zs,.tk_fy { // 注释详情
+			    font-size: 14px;
+			    line-height: 20px;
+			    color: #505050;
+			}
+			
+			.tk_bg { // 诗词赏析,时代背景
+			    font-size: 14px;
+			    line-height: 20px;
+			    color: #505050;
+				margin-bottom: 40px;
+			}
+		}
+	}
+}
+.top_wrap {
+    width: 100%;
+    height: 40px;
+    background: #c4c4c4;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.bottom_wrap {
+    width: 100%;
+    height: 40px;
+    background: #c4c4c4;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+/* 动画样式 */
+//沿左上角到右下角抖动
+@keyframes hvr-waggle-toRtBt {
+  20% {
+    -webkit-transform: translate(8px, 8px);
+    transform: translate(8px, 8px);
+  }
+  40% {
+    -webkit-transform: translate(-6px, -6px);
+    transform: translate(-6px, -6px);
+  }
+  60% {
+    -webkit-transform: translate(4px, 4px);
+    transform: translate(4px, 4px);
+  }
+  80% {
+    -webkit-transform: translate(-2px, -2px);
+    transform: translate(-2px, -2px);
+  }
+  100% {
+    -webkit-transform: translate(0px, 0px);
+    transform: translate(0px, 0px);
+  }
+}
+// 字体颜色变换
+@keyframes hue {
+  from {
+    filter: hue-rotate(0deg);
+  }
+  to {
+    filter: hue-rotate(-360deg);
+  }
+}
+
+
+/*滚动条样式*/
+body::-webkit-scrollbar,
+.tk_inner::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 8px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 10px;
+}
+body::-webkit-scrollbar-thumb,
+.tk_inner::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+}
+body::-webkit-scrollbar-track,
+.tk_inner::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    background: #c4c4c4;
+}
+body::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+body::-webkit-scrollbar-track {
+    background: #6291a4;
+}
+
+/* 更改 input 默认提示文字样式 */
+input::-webkit-input-placeholder {
+    color: #f5dfc3;
+}
+input:-moz-placeholder {
+    color: #f5dfc3;
+}
+input:-ms-input-placeholder {
+    color: #f5dfc3;
+}
